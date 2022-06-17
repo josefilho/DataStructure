@@ -1,3 +1,16 @@
+//-----------------------------------------------------------------------------
+// Created by Jose C. S. F. on 01/06/22.
+// Graduating in Computer Science at the State University of Mato Grosso do Sul (UEMS)
+//-----------------------------------------------------------------------------
+// Language: c
+// This software is free software; you can redistribute it and/or
+// modify it under the terms of the MIT license. See LICENSE for details.
+// If you use this library, let me know via twitter: @lxblvk
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// Includes
+//-----------------------------------------------------------------------------
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -6,12 +19,21 @@
 #include "libs/List/List.h"
 #include "libs/Stack/Stack.h"
 #include "libs/Queue/Queue.h"
+//-----------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------
+// Dynamic defines
+//-----------------------------------------------------------------------------
 #ifdef __unix__
 #define clear system("clear")
 #else
 #define clear system("cls")
 #endif
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// Defines to easier the manipulation of the screen
+//-----------------------------------------------------------------------------
 
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 600
@@ -19,37 +41,119 @@
 #define NODE_HEIGHT 50
 #define TOTAL_WIDTH (NODE_WIDTH + 32)
 #define TOTAL_HEIGHT NODE_HEIGHT
+//-----------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------
 // Colors
+//-----------------------------------------------------------------------------
+//TERMINAL COLORS
 #define Red "\033[0;31m"
 #define Green "\033[0;32m"
 #define Purple "\033[0;34m"
 #define Cyan "\033[0;36m"
 #define Reset "\033[0m"
 #define Bold "\033[1m"
+//-----------------------------------------------------------------------------
+//GFX COLORS
 #define GFX_CYAN 13, 171, 219
-#define GFX_RED 226, 2, 17
 #define GFX_GREEN 80, 250, 123
 #define GFX_PURPLE 70, 55, 121
-#define GFX_BLACK 5, 0, 16
 #define GFX_WHITE 228, 226, 226
+#define GFX_RED 227, 36, 36
+//-----------------------------------------------------------------------------
 
+//-----------------------------------------------------------------------------
+// Functions scope
+//-----------------------------------------------------------------------------
+
+/*
+ mainMenu:
+ 		This function is responsible for the main menu of the program.
+ 		It will show the options to the user and wait for the user to
+ 		select one of them.
+
+ 		@return: The option selected by the user.
+*/
 int mainMenu ();
 
+/*
+ subMenu:
+ 		This function is responsible for the sub menu of the program.
+ 		It will show texts according to the parameter passed to it.
+
+ 		@param isList: boolean to indicate if the menu is for a list or not.
+
+ 		@return: void.
+*/
 void subMenu ( bool );
 
+/*
+ operationsMenu:
+ 		This function is responsible for the operations' menu of the program.
+ 		It will show the options to the user and wait for the user to
+ 		select one of them.
+
+ 		@param option: option selected by the user in the main menu.
+
+ 		@return: the option selected by the user.
+*/
 int operationsMenu ( int );
 
-void viewList ( struct Node* );
+/*
+	drawNode:
+		This function is responsible for drawing a node in the screen.
+		It will draw the node according to the parameters passed to it.
 
+		@param node: the node to be drawn.
+		@param x: the x coordinate of the node.
+		@param y: the y coordinate of the node.
+
+		@return: void.
+*/
 void drawNode ( struct Node*, int, int );
 
+/*
+	drawDNode:
+		This function is responsible for drawing a node with two locals
+		to pointers in the screen.
+		It will draw the node according to the parameters passed to it.
+
+		@param node: the node to be drawn.
+		@param x: the x coordinate of the node.
+		@param y: the y coordinate of the node.
+
+		@return: void.
+*/
 void drawDNode ( struct dNode*, bool, int, int );
 
+/*
+ drawList:
+ 		This function is responsible for drawing a list in the screen.
+ 		It will draw the list passed to it.
+
+ 		@param list: the list to be drawn.
+
+ 		@return: void.
+*/
 void drawList ( struct Node* );
 
+/*
+ drawDList:
+ 		This function is responsible for drawing a list doubly linked
+ 		in the screen.
+ 		It will draw the list passed to it.
+
+ 		@param list: the list to be drawn.
+
+ 		@return: void.
+*/
 void drawDList ( struct dNode* );
 
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+// Main function
+//-----------------------------------------------------------------------------
 
 int main ( int argc, char** argv ) {
 	int choice;
@@ -58,7 +162,8 @@ int main ( int argc, char** argv ) {
 	do {
 		choice = mainMenu();
 		switch ( choice ) {
-			case 1: { // List Simply Linked
+			// List Simply Linked
+			case 1: {
 				int operation;
 				setCircular( false );
 				struct Node* node = NULL;
@@ -66,64 +171,94 @@ int main ( int argc, char** argv ) {
 					clear;
 					operation = operationsMenu( 1 );
 					switch ( operation ) {
-						case 1: { // Insertion
+						// Insertion
+						case 1: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( insertNodeInList( &node, value ) ) {
-								printf( "%sInsertion successful!%s\n", Green, Reset );
+								strcpy( message, "Insertion successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color(GFX_GREEN);
+								gfx_text(10, WINDOW_HEIGHT - 20, message);
+								gfx_paint();
 							}
 							else {
-								printf( "%sInsertion failed!%s\n", Red, Reset );
+								strcpy( message, "Insertion failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color(GFX_RED);
+								gfx_text(10, WINDOW_HEIGHT - 20, message);
+								gfx_paint();
 							}
-							gfx_clear();
-							drawList( node );
-							gfx_paint();
-							sleep( 1 );
-						}
-							break;
-						case 2: { // Deletion
+						} break;
+						// Delete
+						case 2: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( removeNodeFromList( &node, value ) ) {
-								printf( "%sDeletion successful!%s\n", Green, Reset );
-
+								strcpy( message, "Deletion successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color(GFX_GREEN);
+								gfx_text(10, WINDOW_HEIGHT - 20, message);
+								gfx_paint();
 							}
 							else {
-								printf( "%sDeletion failed!%s\n", Red, Reset );
+								strcpy( message, "Deletion failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color(GFX_RED);
+								gfx_text(10, WINDOW_HEIGHT - 20, message);
+								gfx_paint();
 							}
-							gfx_clear();
-							drawList( node );
-							gfx_paint();
-							sleep( 1 );
-						}
-							break;
-						case 3: { // Search
+						} break;
+						// Search
+						case 3: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( searchNodeInList( node, value ) ) {
-								printf( "%sValue found!%s\n", Green, Reset );
-								sleep( 1 );
+								strcpy( message, "Value found: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sValue doesn't found!%s\n", Red, Reset );
-								sleep( 1 );
+								strcpy( message, "Value not found: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-						}
-							break;
+						} break;
+						// Exit
 						default: {
 							removeAllNodesFromList( &node );
-						}
-							break;
+						} break;
 					} // End of switch
 				} while ( operation != 4 );
 				gfx_clear();
 				gfx_paint();
 				clear;
-			}
-				break; // End of List Simply Linked
+			}break; // End of List Simply Linked
 			case 2: {
 				int operation;
 				struct Node* node = NULL;
@@ -132,63 +267,93 @@ int main ( int argc, char** argv ) {
 					clear;
 					operation = operationsMenu( 2 );
 					switch ( operation ) {
-						case 1: { // Insertion
+						// Insertion
+						case 1: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( insertNodeInList( &node, value ) ) {
-								printf( "%sInsertion successful!%s\n", Green, Reset );
+								strcpy( message, "Insertion successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sInsertion failed!%s\n", Red, Reset );
+								strcpy( message, "Insertion failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-							gfx_clear();
-							drawList( node );
-							gfx_paint();
-							sleep( 1 );
-						}
-							break;
-						case 2: { // Deletion
+						} break;
+						// Delete
+						case 2: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( removeNodeFromList( &node, value ) ) {
-								printf( "%sDeletion successful!%s\n", Green, Reset );
+								strcpy( message, "Deletion successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sDeletion failed!%s\n", Red, Reset );
+								strcpy( message, "Deletion failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-							gfx_clear();
-							drawList( node );
-							gfx_paint();
-							sleep( 1 );
-						}
-							break;
-						case 3: { // Search
+						} break;
+						// Search
+						case 3: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( searchNodeInList( node, value ) ) {
-								printf( "%sValue found!%s\n", Green, Reset );
+								strcpy( message, "Value found: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sValue doesn't found!%s\n", Red, Reset );
+								strcpy( message, "Value not found: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-							sleep( 1 );
-						}
-							break;
+						} break;
 						default: {
-							clear;
-						}
-							break;
+							removeAllNodesFromList( &node );
+						} break;
 					}
 				} while ( operation != 4 );
-				removeAllNodesFromList( &node );
 				gfx_clear();
 				gfx_paint();
 				setCircular( false );
-			}
-				break; // End of List Circularly Linked
+			} break; // End of List Circularly Linked
 			case 3: { // Doubly Linked
 				setCircular( false );
 				int operation;
@@ -200,55 +365,95 @@ int main ( int argc, char** argv ) {
 					clear;
 					operation = operationsMenu( 3 );
 					switch ( operation ) {
-						case 1: { // Insertion
+						// Insertion
+						case 1: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( insertDNodeInList( &head, value ) ) {
-								printf( "%sInsertion successful!%s\n", Green, Reset );
+								strcpy( message, "Insertion successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawDList( head );
+								gfx_set_color(GFX_GREEN);
+								gfx_text(10, WINDOW_HEIGHT - 20, message);
+								gfx_paint();
 							}
 							else {
-								printf( "%sInsertion failed!%s\n", Red, Reset );
+								strcpy( message, "Insertion failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawDList( head );
+								gfx_set_color(GFX_GREEN);
+								gfx_text(10, WINDOW_HEIGHT - 20, message);
+								gfx_paint();
 							}
-						}
-							break;
-						case 2: { // Delete
+						} break;
+						// Delete
+						case 2: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( removeDNodeFromList( &head, value ) ) {
-								printf( "%sDeletion successful!%s\n", Green, Reset );
+								strcpy( message, "Deletion successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawDList( head );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sDeletion failed!%s\n", Red, Reset );
+								strcpy( message, "Deletion failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawDList( head );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-						}
-							break;
-						case 3: { // Search
+						} break;
+						// Search
+						case 3: {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( searchDNodeInList( head, value ) ) {
-								printf( "%sValue found!%s\n", Green, Reset );
+								strcpy( message, "Value found: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawDList( head );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sValue doesn't found!%s\n", Red, Reset );
+								strcpy( message, "Value not found: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawDList( head );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-						}
-							break;
+						} break;
+						// Exit
 						default: {
-							clear;
-						}
-							break;
+							gfx_clear();
+						} break;
 					}
-					gfx_clear();
-					drawDList( head );
-					gfx_paint();
-					sleep( 1 );
 				} while ( operation != 4 );
+				removeAllDNodesFromList( &head );
 				free( head );
-			}
-				break; // End of Doubly Linked
+				gfx_clear();
+				gfx_paint();
+			} break; // End of Doubly Linked
 			case 4: { // Stack
 				int operation;
 				struct Node* node = NULL;
@@ -261,40 +466,57 @@ int main ( int argc, char** argv ) {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( pushStack( &node, value ) ) {
-								printf( "%sPush successful!%s\n", Green, Reset );
-								sleep( 1 );
+								strcpy( message, "Push successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sPush failed!%s\n", Red, Reset );
-								sleep( 1 );
+								strcpy( message, "Push failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-						}
-							break;
+						} break;
 						case 2: {
 							int valuePopped = popStack( &node );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", valuePopped );
 							if ( valuePopped != -1 ) {
-								printf( "%sValue popped: %d%s\n", Green, valuePopped, Reset );
-								sleep( 1 );
+								strcpy( message, "Value popped: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sStack is empty!%s\n", Red, Reset );
-								sleep( 1 );
+								strcpy( message, "Pop failed (Stack is empty or the number popped is -1)" );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-						}
-							break;
+						} break;
 						default: {
-							removeAllNodesFromList( &node );
 							gfx_clear();
-						}
-							break;
+						} break;
 					}
-					gfx_clear();
-					drawList( node );
-					gfx_paint();
 				} while ( operation != 3 );
-			}
-				break; // End of Stack
+				removeAllNodesFromList( &node );
+				gfx_paint();
+			} break; // End of Stack
 			case 5: { // Queue
 				int operation;
 				struct Node* node = NULL;
@@ -307,45 +529,57 @@ int main ( int argc, char** argv ) {
 							int value;
 							printf( "%sEnter value: %s", Bold, Green );
 							scanf( "%d", &value );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", value );
 							if ( pushQueue( &node, value ) ) {
-								printf( "%sPush successful!%s\n", Green, Reset );
+								strcpy( message, "Push successful: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
 							else {
-								printf( "%sPush failed!%s\n", Red, Reset );
+								strcpy( message, "Push failed: " );
+								strcat( message, convertedValue );
+								gfx_clear();
+								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
+								gfx_paint();
 							}
-							gfx_clear();
-							drawList( node );
-							gfx_paint();
-							sleep( 1 );
-						}
-							break;
+						} break;
 						case 2: {
 							int valuePopped = popQueue( &node );
+							char convertedValue[20], message[100];
+							snprintf( convertedValue, 20, "%d", valuePopped );
 							if ( valuePopped != -1 ) {
-								printf( "%sValue popped: %d%s\n", Green, valuePopped, Reset );
+								strcpy( message, "Value popped: " );
+								strcat( message, convertedValue );
 								gfx_clear();
 								drawList( node );
+								gfx_set_color( GFX_GREEN );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
 								gfx_paint();
-								sleep( 1 );
 							}
 							else {
-								printf( "%sQueue is empty!%s\n", Red, Reset );
+								strcpy( message, "Pop failed (Queue is empty or the number popped is -1)" );
 								gfx_clear();
 								drawList( node );
+								gfx_set_color( GFX_RED );
+								gfx_text( 10, WINDOW_HEIGHT - 20, message );
 								gfx_paint();
-								sleep( 1 );
 							}
-						}
-							break;
+						} break;
 						default: {
-							removeAllNodesFromList( &node );
 							gfx_clear();
-						}
-							break;
+						} break;
 					}
 				} while ( operation != 3 );
-			}
-				break; // End of Queue
+				removeAllNodesFromList( &node );
+				gfx_paint();
+			} break; // End of Queue
 			default: {
 			}
 		}
@@ -360,7 +594,7 @@ int mainMenu () {
 	clear;
 	printf( Purple );
 	printf( "┌──────────────────────────────────────────────────┐\n" );
-	printf( "│                       MENU                       │\n" );
+	printf( "│                       %sMENU%s                       │\n", Bold, Purple );
 	printf( "├──────────────────────────────────────────────────┤\n" );
 	printf( "│ " );
 	printf( Cyan "1. List (Simply Linked)                          " );
@@ -445,8 +679,7 @@ int operationsMenu ( int option ) {
 					printf( Reset );
 				}
 			} while ( choice < 1 || choice > 4 );
-		}
-			break;
+		} break;
 		case 2: {
 			printf( Purple );
 			printf( "┌──────────────────────────────────────────────────┐\n" );
@@ -464,8 +697,7 @@ int operationsMenu ( int option ) {
 					printf( Reset );
 				}
 			} while ( choice < 1 || choice > 4 );
-		}
-			break;
+		} break;
 		case 3: {
 			printf( Purple );
 			printf( "┌──────────────────────────────────────────────────┐\n" );
@@ -483,8 +715,7 @@ int operationsMenu ( int option ) {
 					printf( Reset );
 				}
 			} while ( choice < 1 || choice > 4 );
-		}
-			break;
+		} break;
 		case 4: {
 			printf( Purple );
 			printf( "┌──────────────────────────────────────────────────┐\n" );
@@ -502,8 +733,7 @@ int operationsMenu ( int option ) {
 					printf( Reset );
 				}
 			} while ( choice < 1 || choice > 4 );
-		}
-			break;
+		} break;
 		case 5: {
 			printf( Purple );
 			printf( "┌──────────────────────────────────────────────────┐\n" );
@@ -521,27 +751,15 @@ int operationsMenu ( int option ) {
 					printf( Reset );
 				}
 			} while ( choice < 1 || choice > 4 );
+		} break;
+		default: {
+			printf( Red );
+			printf( "%sInvalid option. Please try again.%s\n", Bold, Green );
+			printf( Reset );
 		}
 	}
 
 	return choice;
-}
-
-void viewList ( struct Node* node ) {
-	if ( isCircular() ) {
-		printf( "%s%d %s->", Cyan, node->value, Red );
-		while ( node->next != node ) {
-			printf( "%s%d %s-> ", Cyan, node->value, Red );
-			node = node->next;
-		}
-		printf( "NULL\n" );
-		return;
-	}
-	while ( node != NULL ) {
-		printf( "%s%d%s -> ", Cyan, node->value, Red );
-		node = node->next;
-	}
-	printf( "NULL%s\n", Reset );
 }
 
 void drawNode ( struct Node* node, int x, int y ) {
@@ -593,13 +811,13 @@ void drawDNode ( struct dNode* node, bool isHead, int x, int y ) {
 	}
 }
 
-void drawList ( struct Node* node ) {
+void drawList ( struct Node* list ) {
 	if ( isCircular() ) {
-		if ( node == NULL ) { return; }
+		if ( list == NULL ) { return; }
 		int x = 10, y = 10, count = 0, firstNodeX = ( TOTAL_WIDTH / 2 ) - 10, firstNodeY = ( TOTAL_HEIGHT ) + 12;
-		struct Node* temp = node;
+		struct Node* temp = list;
 		// Draw first node
-		while ( temp->next != node ) {
+		while ( temp->next != list ) {
 			drawNode( temp, x, y );
 			gfx_set_color( 137, 0, 255 );
 			gfx_filled_ellipse( x + NODE_WIDTH - 8, y + NODE_HEIGHT / 2, 3, 4 );
@@ -632,9 +850,9 @@ void drawList ( struct Node* node ) {
 	}
 	else {
 		int x = 10, y = 10, count = 0;
-		while ( node != NULL ) {
-			drawNode( node, x, y );
-			node->next == NULL ? gfx_set_color( 255, 15, 15 ) : gfx_set_color( 137, 0, 255 );
+		while ( list != NULL ) {
+			drawNode( list, x, y );
+			list->next == NULL ? gfx_set_color( 255, 15, 15 ) : gfx_set_color( 137, 0, 255 );
 			gfx_filled_ellipse( x + NODE_WIDTH - 8, y + NODE_HEIGHT / 2, 3, 4 );
 			gfx_line( x + NODE_WIDTH - 8, y + NODE_HEIGHT / 2, x + NODE_WIDTH + 32, y + NODE_HEIGHT / 2 );
 			gfx_line( x + NODE_WIDTH + 24, ( y + NODE_HEIGHT / 2 ) - 5, x + NODE_WIDTH + 32, y + NODE_HEIGHT / 2 );
@@ -647,7 +865,7 @@ void drawList ( struct Node* node ) {
 			else {
 				x += TOTAL_WIDTH + 1;
 			}
-			node = node->next;
+			list = list->next;
 		}
 	}
 }
