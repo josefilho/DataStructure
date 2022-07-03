@@ -1,3 +1,0 @@
-/home/nullbyte/Desktop/www/College/AED2/DataStructures/CMakeFiles/DataStructures.dir
-/home/nullbyte/Desktop/www/College/AED2/DataStructures/CMakeFiles/edit_cache.dir
-/home/nullbyte/Desktop/www/College/AED2/DataStructures/CMakeFiles/rebuild_cache.dir

@@ -1,4 +1,0 @@
-/snap/clion/193/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "Unix Makefiles" -S /home/nullbyte/Desktop/www/College/AED2/DataStructures -B /home/nullbyte/Desktop/www/College/AED2/DataStructures
--- Configuring done
--- Generating done
--- Build files have been written to: /home/nullbyte/Desktop/www/College/AED2/DataStructures
