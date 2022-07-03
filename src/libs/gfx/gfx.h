@@ -1,9 +1,20 @@
-//
-// Created by nullbyte on 03/04/2022.
-//
+/*
 
-#ifndef SIERPINSK_GFX_H
-#define SIERPINSK_GFX_H
+Simple GFX (graphics) library based on SDL library
+
+Author: Fabrício Sérgio de Paula (fabricio.paula@gmail.com)
+
+Year: 2013
+
+Use: Before using this library you must install the SDL_gfx and SDL_ttf libraries.
+After that, make sure all gfx library files are at the YOUR-PROGRAM-DIR/gfx directory.
+Then, your program must include gfx.h and be linked with the -lgfx -lSDL_gfx -lSDL_ttf
+options.
+
+*/
+
+#ifndef _GFX_H_
+#define _GFX_H_
 
 #include <SDL/SDL.h>
 #include <SDL/SDL_gfxPrimitives.h>
@@ -32,4 +43,4 @@ void gfx_ellipse(int x, int y, int rx, int ry); /* draw ellipse at center (x,y) 
 void gfx_filled_ellipse(int x, int y, int rx, int ry); /* draw and fill */
 
 
-#endif //SIERPINSK_GFX_H
+#endif //_GFX_H_

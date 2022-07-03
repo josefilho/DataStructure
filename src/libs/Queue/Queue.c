@@ -1,26 +1,32 @@
-//
-// Created by nullbyte on 01/06/22.
-//
+//-----------------------------------------------------------------------------
+// Created by Jose C. S. F. on 01/06/22.
+// Graduating in Computer Science at the State University of Mato Grosso do Sul (UEMS)
+//-----------------------------------------------------------------------------
+// Language: c
+// This implementation library is free software; you can redistribute it and/or
+// modify it under the terms of the MIT license. See LICENSE for details.
+// If you use this library, let me know via twitter: @lxblvk
+//-----------------------------------------------------------------------------
 
 #include "Queue.h"
 
-bool pushQueue(struct Node** node, int value) {
-	if (*node == NULL) {
-		*node = (struct Node*) malloc(sizeof(struct Node));
-		if (*node == NULL) {
+bool pushQueue ( struct Node** node, int value ) {
+	if ( *node == NULL ) {
+		*node = ( struct Node* ) malloc( sizeof( struct Node ) );
+		if ( *node == NULL ) {
 			return false;
 		}
-		(*node)->value = value;
-		(*node)->next = NULL;
+		( *node )->value = value;
+		( *node )->next = NULL;
 		return true;
 	}
 	else {
 		struct Node* temp = *node;
-		while (temp->next != NULL) {
+		while ( temp->next != NULL ) {
 			temp = temp->next;
 		}
-		temp->next = (struct Node*) malloc(sizeof(struct Node));
-		if (temp->next == NULL) {
+		temp->next = ( struct Node* ) malloc( sizeof( struct Node ) );
+		if ( temp->next == NULL ) {
 			return false;
 		}
 		temp->next->value = value;
@@ -29,21 +35,21 @@ bool pushQueue(struct Node** node, int value) {
 	}
 }
 
-int popQueue(struct Node** node) {
-	if (*node == NULL) {
+int popQueue ( struct Node** node ) {
+	if ( *node == NULL ) {
 		return -1;
 	}
-	if ((*node)->next == NULL) {
-		int value = (*node)->value;
-		free(*node);
+	if ( ( *node )->next == NULL ) {
+		int value = ( *node )->value;
+		free( *node );
 		*node = NULL;
 		return value;
 	}
 	else {
 		struct Node* temp = *node;
 		int value = temp->value;
-		*node = (*node)->next;
-		free(temp);
+		*node = ( *node )->next;
+		free( temp );
 		temp = NULL;
 		return value;
 	}
