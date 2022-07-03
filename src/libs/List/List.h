@@ -51,6 +51,10 @@ bool searchNodeInList ( struct Node*, int );
 
 bool searchDNodeInList ( struct dNode*, int );
 
+<<<<<<< HEAD
 struct dNode* findDNodeInList ( struct dNode**, int );
+=======
+static struct dNode* findDNodeInList ( struct dNode**, int );
+>>>>>>> 87e9e6fd6f93c7202237eede85e0ce8eb68b2d83
 
 #endif //LIST_H
