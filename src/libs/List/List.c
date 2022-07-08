@@ -24,6 +24,16 @@ bool isCircular () {
 // --------------------------------------------------
 
 /* Insertion */
+
+/*
+  insertionNodeInList:
+  Inserts a new node in the list.
+
+  @param node: The node contains the list.
+  @param value: The value to be inserted into list.
+
+  @return: True if the value was inserted; false otherwise.
+*/
 bool insertNodeInList ( struct Node** node, int value ) {
 	if ( CIRCULAR ) {
 		if ( *node == NULL ) { // If the list is empty
@@ -129,6 +139,15 @@ bool insertNodeInList ( struct Node** node, int value ) {
 	return true;
 }
 
+/*
+  insertionDNodeInList:
+  Inserts a new node in the list doubly chained.
+
+  @param node: The node contains the list.
+  @param value: The value to be inserted into list.
+
+  @return: True if the value was inserted; false otherwise.
+*/
 bool insertDNodeInList ( struct dNode** head, int value ) {
 	if ( *head == NULL ) {
 		return false; // List without head
@@ -162,6 +181,16 @@ bool insertDNodeInList ( struct dNode** head, int value ) {
 }
 
 /* Removing */
+
+/*
+  removeNodeFromList:
+  Removes a node from the list.
+  
+  @param node: The node contains the list.
+  @param value: The value to be removed from list.
+  
+  @return: True if the value was removed; false otherwise.
+*/
 bool removeNodeFromList ( struct Node** node, int value ) {
 	if ( !searchNodeInList( *node, value ) ) { return false; }
 	if ( CIRCULAR ) {
@@ -235,7 +264,17 @@ bool removeNodeFromList ( struct Node** node, int value ) {
 	return false; // No exists the node
 }
 
+/*
+  removeDNodeFromList:
+  Removes a node from the list doubly chained.
+  
+  @param node: The node contains the list.
+  @param value: The value to be removed from list.
+  
+  @return: True if the value was removed; false otherwise.
+*/
 bool removeDNodeFromList ( struct dNode** node, int value ) {
+	if ( node == NULL || ( ( *node )->prev == NULL || ( *node )->next == NULL)) { return false; }
 	struct dNode* nodeToRemove = findDNodeInList( node, value );
 	if ( nodeToRemove == NULL ) { return false; }
 	if ( nodeToRemove == ( *node )->next && nodeToRemove == ( *node )->prev ) { // If the node is the only node
@@ -254,6 +293,14 @@ bool removeDNodeFromList ( struct dNode** node, int value ) {
 	return true;
 }
 
+/*
+  removeAllNodesFromList:
+  Removes all nodes from the list.
+  
+  @param node: The node contains the list.
+  
+  @return: void.
+*/
 void removeAllNodesFromList ( struct Node** node ) {
 	if ( CIRCULAR ) {
 		if ( *node != NULL ) {
@@ -292,8 +339,19 @@ void removeAllNodesFromList ( struct Node** node ) {
 	}
 }
 
+/*
+  removeAllDNodesFromList:
+  Removes all nodes from the list doubly chained.
+  
+  @param node: The node contains the list.
+  
+  @return: void.
+*/
 void removeAllDNodesFromList ( struct dNode** head ) {
 	if ( *head != NULL ) {
+		if ( ( *head )->next == NULL || ( *head )->prev == NULL ){
+			return;
+		}
 		struct dNode* node = ( *head )->next;
 		while ( node != *head ) {
 			struct dNode* temp = node;
@@ -305,6 +363,16 @@ void removeAllDNodesFromList ( struct dNode** head ) {
 }
 
 /* Searching */
+
+/*
+  searchNodeInList:
+  Searches a node in the list.
+  
+  @param node: The node contains the list.
+  @param value: The value to be searched in list.
+  
+  @return: void.
+*/
 bool searchNodeInList ( struct Node* node, int value ) {
 	struct Node* temp = node;
 	if ( CIRCULAR ) {
@@ -330,7 +398,17 @@ bool searchNodeInList ( struct Node* node, int value ) {
 	}
 }
 
+/*
+  searchDNodeInList:
+  Searches a node in the list doubly chained.
+  
+  @param node: The node contains the list.
+  @param value: The value to be searched in list.
+  
+  @return: void.
+*/
 bool searchDNodeInList ( struct dNode* node, int value ) {
+	if( node == NULL || node->next == NULL || node->prev == NULL ) { return false; }
 	struct dNode* prev = node->prev;
 	struct dNode* next = node->next;
 	while ( prev != next && ( prev != node || next != node ) ) {
@@ -346,6 +424,49 @@ bool searchDNodeInList ( struct dNode* node, int value ) {
 	return false;
 }
 
+/*
+  findNodeInList:
+  Finds a node in the list.
+
+  @param node: The node contains the list.
+  @param value: The value to be found in list.
+
+  @return: The node found; NULL otherwise.
+*/
+struct Node* findNodeInList ( struct Node** list, int value ) {
+	struct Node* temp = *list;
+	if ( CIRCULAR ) {
+		if ( temp == NULL ) { return NULL; }
+		if ( temp->value == value ) { return temp; }
+		else { temp = temp->next; }
+		while ( temp != *list ) {
+			if ( temp->value == value ) {
+				return temp;
+			}
+			temp = temp->next;
+		}
+		return NULL;
+	}
+	else {
+		while ( temp != NULL ) {
+			if ( temp->value == value ) {
+				return temp;
+			}
+			temp = temp->next;
+		}
+		return NULL;
+	}
+}
+
+/*
+  findDNodeInList:
+  Finds a node in the list doubly chained.
+  
+  @param node: The node contains the list.
+  @param value: The value to be found in list.
+  
+  @return: The node found; NULL otherwise.
+*/
 struct dNode* findDNodeInList ( struct dNode** head, int value ) {
 	if ( *head == NULL ) { return NULL; } // empty list
 	struct dNode* next = ( *head )->next;

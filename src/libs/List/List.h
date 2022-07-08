@@ -33,28 +33,117 @@ bool isCircular ();
 // --------------------------------------------------
 
 /* Insertion */
+
+/*
+  insertionNodeInList:
+  Inserts a new node in the list.
+
+  @param node: The node contains the list.
+  @param value: The value to be inserted into list.
+
+  @return: True if the value was inserted; false otherwise.
+*/
 bool insertNodeInList ( struct Node**, int );
 
+/*
+  insertionDNodeInList:
+  Inserts a new node in the list doubly chained.
+
+  @param node: The node contains the list.
+  @param value: The value to be inserted into list.
+
+  @return: True if the value was inserted; false otherwise.
+*/
 bool insertDNodeInList ( struct dNode**, int );
 
 /* Removing */
+
+/*
+  removeNodeFromList:
+  Removes a node from the list.
+  
+  @param node: The node contains the list.
+  @param value: The value to be removed from list.
+  
+  @return: True if the value was removed; false otherwise.
+*/
 bool removeNodeFromList ( struct Node**, int );
 
+/*
+  removeDNodeFromList:
+  Removes a node from the list doubly chained.
+  
+  @param node: The node contains the list.
+  @param value: The value to be removed from list.
+  
+  @return: True if the value was removed; false otherwise.
+*/
 bool removeDNodeFromList ( struct dNode**, int );
 
+/*
+  removeAllNodesFromList:
+  Removes all nodes from the list.
+  
+  @param node: The node contains the list.
+  
+  @return: void.
+*/
 void removeAllNodesFromList ( struct Node** );
 
+/*
+  removeAllDNodesFromList:
+  Removes all nodes from the list doubly chained.
+  
+  @param node: The node contains the list.
+  
+  @return: void.
+*/
 void removeAllDNodesFromList ( struct dNode** );
 
 /* Searching */
+
+/*
+  searchNodeInList:
+  Searches a node in the list.
+  
+  @param node: The node contains the list.
+  @param value: The value to be searched in list.
+  
+  @return: void.
+*/
 bool searchNodeInList ( struct Node*, int );
 
+/*
+  searchDNodeInList:
+  Searches a node in the list doubly chained.
+  
+  @param node: The node contains the list.
+  @param value: The value to be searched in list.
+  
+  @return: void.
+*/
 bool searchDNodeInList ( struct dNode*, int );
 
-<<<<<<< HEAD
+/*
+  findNodeInList:
+  Finds a node in the list.
+
+  @param node: The node contains the list.
+  @param value: The value to be found in list.
+
+  @return: The node found; NULL otherwise.
+*/
+struct Node* findNodeInList ( struct Node**, int );
+
+/*
+  findDNodeInList:
+  Finds a node in the list doubly chained.
+  
+  @param node: The node contains the list.
+  @param value: The value to be found in list.
+  
+  @return: The node found; NULL otherwise.
+*/
 struct dNode* findDNodeInList ( struct dNode**, int );
-=======
-static struct dNode* findDNodeInList ( struct dNode**, int );
->>>>>>> 87e9e6fd6f93c7202237eede85e0ce8eb68b2d83
 
 #endif //LIST_H
