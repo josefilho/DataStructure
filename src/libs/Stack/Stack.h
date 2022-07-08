@@ -14,8 +14,26 @@
 
 #include "../Node/Node.h"
 
+/*
+  pushStack:
+  Pushes a new node to the stack.
+
+  @param node: The node contains the stack.
+  @param value: The value to be pushed into stack.
+
+  @return: The node with the new value pushed.
+*/
 bool pushStack ( struct Node**, int );
 
+/*
+  popStack:
+  Pops a node from the stack.
+
+  @param node: The node contains the stack.
+  
+  @return: The value of the node popped, -1 if node popped doesn't exists or the
+  Stack is empty.
+*/
 int popStack ( struct Node** );
 
 #endif //STACK_H

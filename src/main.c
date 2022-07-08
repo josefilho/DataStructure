@@ -230,7 +230,7 @@ int main () {
 							scanf( "%d", &value );
 							char convertedValue[20], message[100];
 							snprintf( convertedValue, 20, "%d", value );
-							if ( searchNodeInList( node, value ) ) {
+							if ( findNodeInList( &node, value ) ) {
 								strcpy( message, "Value found: " );
 								strcat( message, convertedValue );
 								gfx_clear();

@@ -10,6 +10,15 @@
 
 #include "Stack.h"
 
+/*
+  pushStack:
+  Pushes a new node to the stack.
+
+  @param node: The node contains the stack.
+  @param value: The value to be pushed into stack.
+
+  @return: The node with the new value pushed.
+*/
 bool pushStack ( struct Node** node, int value ) {
 	if ( *node == NULL ) {
 		*node = ( struct Node* ) malloc( sizeof( struct Node ) );
@@ -35,6 +44,14 @@ bool pushStack ( struct Node** node, int value ) {
 	}
 }
 
+/*
+  popStack:
+  Pops a node from the stack.
+
+  @param node: The node contains the stack.
+  
+  @return: The node popped.
+*/
 int popStack ( struct Node** node ) {
 	if ( *node == NULL ) {
 		return -1;

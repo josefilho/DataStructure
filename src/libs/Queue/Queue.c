@@ -10,6 +10,15 @@
 
 #include "Queue.h"
 
+/*
+  pushQueue:
+  Pushes a new node to the queue.
+  
+  @param node: The node contains the queue.
+  @param value: The value to be pushed into queue.
+  
+  @return: The node with the new value pushed.
+*/
 bool pushQueue ( struct Node** node, int value ) {
 	if ( *node == NULL ) {
 		*node = ( struct Node* ) malloc( sizeof( struct Node ) );
@@ -35,6 +44,14 @@ bool pushQueue ( struct Node** node, int value ) {
 	}
 }
 
+/*
+  popQueue:
+  Pops a node from the queue.
+  
+  @param node: The node contains the queue.
+  
+  @return: The value of the node popped.
+*/
 int popQueue ( struct Node** node ) {
 	if ( *node == NULL ) {
 		return -1;
